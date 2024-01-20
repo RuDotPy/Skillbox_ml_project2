@@ -13,14 +13,14 @@ import mlflow.sklearn
 
 os.environ['MLFLOW_TRACKING_URI'] = 'http://localhost:5050'
 os.environ['MLFLOW_S3_ENDPOINT_URL'] = 'http://localhost:9000'
-os.environ['AWS_ACCESS_KEY_ID'] = 'minio'
-os.environ['AWS_SECRET_ACCESS_KEY'] = 'minio1231'
+os.environ['AWS_ACCESS_KEY_ID'] = 'Danil123'
+os.environ['AWS_SECRET_ACCESS_KEY'] = 'Danil1231'
 
 # Инициализация клиента
 s3 = boto3.client('s3',
                   endpoint_url='http://localhost:9000',
-                  aws_access_key_id='minio',
-                  aws_secret_access_key='minio123')
+                  aws_access_key_id='Danil123',
+                  aws_secret_access_key='Danil123')
 
 # Считывание данных
 obj = s3.get_object(Bucket='datasets', Key='kinopoisk_train.csv')
@@ -55,8 +55,8 @@ except s3.exceptions.BucketAlreadyOwnedByYou:
 
 # Настройка клиента boto3
 boto3.setup_default_session(
-    aws_access_key_id='minio',
-    aws_secret_access_key='minio123',
+    aws_access_key_id='Danil123',
+    aws_secret_access_key='Danil123',
     region_name='us-west-1'  # или другой регион, если это применимо
 )
 
