@@ -14,7 +14,7 @@ import mlflow.sklearn
 os.environ['MLFLOW_TRACKING_URI'] = 'http://localhost:5050'
 os.environ['MLFLOW_S3_ENDPOINT_URL'] = 'http://localhost:9000'
 os.environ['AWS_ACCESS_KEY_ID'] = 'minio'
-os.environ['AWS_SECRET_ACCESS_KEY'] = 'minio123'
+os.environ['AWS_SECRET_ACCESS_KEY'] = 'minio1231'
 
 # Инициализация клиента
 s3 = boto3.client('s3',
