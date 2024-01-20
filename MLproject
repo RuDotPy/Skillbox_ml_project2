@@ -1,11 +1,11 @@
 
-name: kinopoisk
+name: kinopoisk_project
 
-conda_env: environment.yml
+docker_env:
+  image: kinopoisk:1.0.0
 
 entry_points:
   main:
     parameters:
-      data_file: {type: str, default: "data/kinopoisk_train.csv"}
-    command: "python train.py {data_file}"
-
+      data_file: {type: str, default: "datasets/kinopoisk_train.csv"}
+    command: "python train.py"
