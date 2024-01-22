@@ -108,6 +108,6 @@ with mlflow.start_run() as run:
     mlflow.log_metric("accuracy", accuracy_score(y_test, y_pred))
 
     # Логирование модели
-    mlflow.sklearn.log_model(clf, "model", registered_model_name="MyFirstModel")
+    mlflow.sklearn.log_model(clf, "model", registered_model_name="Second_HYPEROPT_MODEL")
 
 
