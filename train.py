@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 import mlflow
 import mlflow.sklearn
+import hyperopt
 
 
 os.environ['MLFLOW_TRACKING_URI'] = 'http://localhost:5050'
@@ -36,8 +37,48 @@ vectorizer = CountVectorizer()
 X_train_vec = vectorizer.fit_transform(X_train)
 X_test_vec = vectorizer.transform(X_test)
 
+
+def objective(args):
+    try:
+        C = args["C"]
+        penalties = args["penalties"]
+        solvers = args["solvers"]
+        log_reg = LogisticRegression(C=C,
+                                    penalty=penalties,
+                                    solver=solvers,
+                                    n_jobs=-1,
+                                    random_state=42)
+
+        log_reg.fit(X_train_vec, y_train)
+        score = accuracy_score(y_true=y_test, y_pred=log_reg.predict(X_test_vec))
+
+        print("Hyperparameters : {}".format(args))
+        print("Accuracy : {}\n".format(score))
+
+        return -1 * score
+    except Exception as e:
+        print(str(e))
+        return 1000  
+
+penalties = ["l1", "elasticnet", "l2"]
+solvers = ['lbfgs', 'liblinear', 'newton-cg', 'newton-cholesky', 'sag', 'saga']
+
+search_space = {    
+    "C": hyperopt.hp.uniform("C", 1, 5),
+    'solvers': hyperopt.hp.choice('solvers', solvers),
+    'penalties': hyperopt.hp.choice('penalties', penalties)
+}
+trials_obj = hyperopt.Trials()
+best_results = hyperopt.fmin(objective,
+                             space=search_space,
+                             algo=hyperopt.tpe.suggest,
+                             trials=trials_obj,
+                             timeout=100,
+                             max_evals=50)
+
+
 # Обучение модели
-clf = LogisticRegression()
+clf = LogisticRegression(C = best_results['C'], penalty=penalties[best_results['penalties']], solver=solvers[best_results['solvers']])
 clf.fit(X_train_vec, y_train)
 
 # Предсказание
